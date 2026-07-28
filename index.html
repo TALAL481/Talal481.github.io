@@ -244,8 +244,37 @@ pass += chars[Math.floor(Math.random()*chars.length)];
 document.getElementById("password").innerHTML=pass;
 
 }
-  async function generateEssay(){
+async function generateEssay(){
 
+let topic = document.getElementById("topic").value;
+
+let words = document.getElementById("words").value;
+
+let response = await fetch("https://talal481-github-io-4.onrender.com/essay", {
+
+  method: "POST",
+
+  headers: {
+
+    "Content-Type": "application/json"
+
+  },
+
+  body: JSON.stringify({
+
+    topic: topic,
+
+    words: words
+
+  })
+
+});
+
+let data = await response.json();
+
+document.getElementById("essayOutput").value = data.result;
+
+}
 let topic = document.getElementById("topic").value;
 
 let words = document.getElementById("words").value;
