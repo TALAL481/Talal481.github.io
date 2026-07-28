@@ -40,11 +40,21 @@ button {
 
   border-radius: 10px;
 
+  cursor: pointer;
+
 }
 
 input {
 
   padding: 10px;
+
+  border-radius: 8px;
+
+}
+
+h1 {
+
+  margin-top: 30px;
 
 }
 
@@ -72,39 +82,67 @@ input {
 
 <div class="box">
 
-<h2>🧮 Calculator</h2>
+<h2>🔐 Password Generator</h2>
 
-<input id="num1" placeholder="Number 1">
+<button onclick="password()">Generate Password</button>
 
-<input id="num2" placeholder="Number 2">
-
-<br>
-
-<button onclick="calc('+')">+</button>
-
-<button onclick="calc('-')">-</button>
-
-<button onclick="calc('*')">×</button>
-
-<button onclick="calc('/')">÷</button>
-
-<h3 id="answer">Answer:</h3>
+<h3 id="pass"></h3>
 
 </div>
 
 <div class="box">
 
-<h2>🔐 Password Generator</h2>
+<h2>🎲 Random Number Generator</h2>
 
-<button onclick="generatePassword()">Generate</button>
+<button onclick="randomNumber()">Generate</button>
 
-<h3 id="password"></h3>
+<h3 id="number"></h3>
+
+</div>
+
+<div class="box">
+
+<h2>💡 Random Idea Generator</h2>
+
+<button onclick="idea()">Generate Idea</button>
+
+<h3 id="idea"></h3>
+
+</div>
+
+<div class="box">
+
+<h2>💬 Random Quote Generator</h2>
+
+<button onclick="quote()">Generate Quote</button>
+
+<h3 id="quote"></h3>
+
+</div>
+
+<div class="box">
+
+<h2>📝 Paragraph Generator</h2>
+
+<input id="topic" placeholder="Topic">
+
+<br><br>
+
+<input id="lines" placeholder="Number of lines">
+
+<br><br>
+
+<button onclick="generateParagraph()">Generate</button>
+
+<p id="paragraph"></p>
 
 </div>
 
 <script>
 
-let milliseconds = 0;
+let startTime;
+
+let elapsed = 0;
 
 let timer = null;
 
@@ -112,15 +150,17 @@ function start(){
 
 if(timer === null){
 
+startTime = Date.now() - elapsed;
+
 timer = setInterval(()=>{
 
-milliseconds++;
+elapsed = Date.now() - startTime;
 
-let ms = milliseconds % 1000;
+let ms = elapsed % 1000;
 
-let seconds = Math.floor(milliseconds / 1000) % 60;
+let seconds = Math.floor(elapsed / 1000) % 60;
 
-let minutes = Math.floor(milliseconds / 60000);
+let minutes = Math.floor(elapsed / 60000);
 
 document.getElementById("time").innerHTML =
 
@@ -130,7 +170,7 @@ String(seconds).padStart(2,"0") + ":" +
 
 String(ms).padStart(3,"0");
 
-},1);
+},10);
 
 }
 
@@ -148,45 +188,95 @@ function reset(){
 
 pause();
 
-milliseconds = 0;
+elapsed = 0;
 
 document.getElementById("time").innerHTML="00:00:000";
 
 }
 
-function calc(op){
-
-let a = Number(document.getElementById("num1").value);
-
-let b = Number(document.getElementById("num2").value);
-
-let result;
-
-if(op=="+") result=a+b;
-
-if(op=="-") result=a-b;
-
-if(op=="*") result=a*b;
-
-if(op=="/") result=a/b;
-
-document.getElementById("answer").innerHTML="Answer: "+result;
-
-}
-
-function generatePassword(){
+function password(){
 
 let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%";
 
-let password="";
+let result="";
 
 for(let i=0;i<12;i++){
 
-password += chars[Math.floor(Math.random()*chars.length)];
+result += chars[Math.floor(Math.random()*chars.length)];
 
 }
 
-document.getElementById("password").innerHTML=password;
+document.getElementById("pass").innerHTML=result;
+
+}
+
+function randomNumber(){
+
+document.getElementById("number").innerHTML =
+
+Math.floor(Math.random()*1000);
+
+}
+
+function idea(){
+
+let ideas=[
+
+"Learn a new skill",
+
+"Create a small project",
+
+"Read a book",
+
+"Exercise today",
+
+"Try something creative"
+
+];
+
+document.getElementById("idea").innerHTML =
+
+ideas[Math.floor(Math.random()*ideas.length)];
+
+}
+
+function quote(){
+
+let quotes=[
+
+"Keep going 🔥",
+
+"Never stop learning",
+
+"Small steps create big results",
+
+"Make today count",
+
+"Believe in yourself"
+
+];
+
+document.getElementById("quote").innerHTML =
+
+quotes[Math.floor(Math.random()*quotes.length)];
+
+}
+
+function generateParagraph(){
+
+let topic = document.getElementById("topic").value;
+
+let lines = Number(document.getElementById("lines").value);
+
+let text = "";
+
+for(let i=0;i<lines;i++){
+
+text += " " + topic + " is an interesting topic that people can learn about. Understanding this subject helps us gain knowledge and improve our skills.";
+
+}
+
+document.getElementById("paragraph").innerHTML = text;
 
 }
 
