@@ -4,67 +4,87 @@
 
 <head>
 
-<title>AI Tools Hub</title>
+<title>AI Tools</title>
 
 <style>
 
-body{
+body {
 
-background:black;
+  margin: 0;
 
-color:white;
+  font-family: Arial, sans-serif;
 
-font-family:Arial;
+  background: black;
 
-text-align:center;
+  color: white;
 
-}
-
-.container{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-padding:15px;
+  text-align: center;
 
 }
 
-.box{
+h1 {
 
-background:#222;
-
-padding:15px;
-
-border-radius:15px;
+  margin-top: 20px;
 
 }
 
-button{
+.container {
 
-padding:8px;
+  display: grid;
 
-margin:4px;
+  grid-template-columns: repeat(2, 1fr);
 
-border-radius:8px;
+  gap: 15px;
 
-}
-
-input,textarea{
-
-width:90%;
-
-padding:8px;
-
-border-radius:8px;
+  padding: 20px;
 
 }
 
-textarea{
+.card {
 
-height:100px;
+  background: #111;
+
+  border-radius: 15px;
+
+  padding: 20px;
+
+  border: 1px solid #333;
+
+}
+
+button {
+
+  background: white;
+
+  color: black;
+
+  border: none;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+}
+
+input, textarea {
+
+  width: 90%;
+
+  padding: 10px;
+
+  margin: 10px;
+
+  border-radius: 10px;
+
+  border: none;
+
+}
+
+#stopwatch {
+
+  font-size: 35px;
 
 }
 
@@ -74,69 +94,66 @@ height:100px;
 
 <body>
 
-<h1>🚀 AI Tools Hub</h1>
-
-<div class="box">
-
-<h3>🎨 Change Background</h3>
-
-<input type="color" onchange="changeBG(this.value)">
-
-</div>
+<h1>AI Tools 🚀</h1>
 
 <div class="container">
 
-<div class="box">
+<div class="card">
 
-<h3>⏱️ Stopwatch</h3>
+<h2>⏱ Stopwatch</h2>
 
-<h2 id="time">00:00:000</h2>
+<div id="stopwatch">00:00:00.000</div>
 
-<button onclick="start()">Start</button>
+<button onclick="startWatch()">Start</button>
 
-<button onclick="pause()">Pause</button>
+<button onclick="stopWatch()">Stop</button>
 
-<button onclick="reset()">Reset</button>
-
-</div>
-
-<div class="box">
-
-<h3>🔐 Password Generator</h3>
-
-<button onclick="makePassword()">Generate</button>
-
-<p id="password"></p>
+<button onclick="resetWatch()">Reset</button>
 
 </div>
 
-<div class="box">
+<div class="card">
 
-<h3>📝 Essay Generator</h3>
+<h2>🔐 Password Generator</h2>
 
-<input id="topic" placeholder="Essay topic">
+<p id="password">Your password</p>
 
-<br><br>
+<button onclick="generatePassword()">Generate</button>
 
-<input id="amount" placeholder="Words (max 3000)">
+</div>
+<div class="card">
 
-<br><br>
+<h2>📝 Essay Generator</h2>
 
-<button onclick="makeEssay()">Generate</button>
+<input id="topic" placeholder="Enter essay topic">
 
-<textarea id="essay"></textarea>
+<input id="words" placeholder="Number of words (max 3000)">
+
+<button onclick="generateEssay()">Generate Essay</button>
+
+<textarea id="essayOutput" rows="10" placeholder="Your essay appears here"></textarea>
 
 </div>
 
-<div class="box">
+<div class="card">
 
-<h3>🤖 AI Humanizer</h3>
+<h2>🤖 AI Humanizer</h2>
 
-<textarea id="inputText" placeholder="Paste text here"></textarea>
+<textarea id="humanInput" rows="8" placeholder="Paste your text here"></textarea>
 
-<button onclick="humanize()">Fix Text</button>
+<button onclick="humanize()">Humanize</button>
 
-<textarea id="outputText"></textarea>
+<textarea id="humanOutput" rows="8" placeholder="Humanized text"></textarea>
+
+</div>
+
+<div class="card">
+
+<h2>🎨 Background</h2>
+
+<input type="color" id="bgColor">
+
+<button onclick="changeBackground()">Change</button>
 
 </div>
 
@@ -144,119 +161,120 @@ height:100px;
 
 <script>
 
-// BACKGROUND
-
-function changeBG(color){
-
-document.body.style.background=color;
-
-}
-
-// STOPWATCH
-
-let elapsed=0;
-
 let startTime;
 
-let timer=null;
+let timer;
 
-function start(){
+let running = false;
 
-if(timer==null){
+let elapsed = 0;
 
-startTime=Date.now()-elapsed;
+function updateWatch(){
 
-timer=setInterval(()=>{
+let time = Date.now() - startTime + elapsed;
 
-elapsed=Date.now()-startTime;
+let ms = time % 1000;
 
-let ms=elapsed%1000;
+let sec = Math.floor(time/1000)%60;
 
-let sec=Math.floor(elapsed/1000)%60;
+let min = Math.floor(time/60000)%60;
 
-let min=Math.floor(elapsed/60000);
-
-document.getElementById("time").innerHTML=
+document.getElementById("stopwatch").innerHTML =
 
 String(min).padStart(2,"0")+":"+
 
-String(sec).padStart(2,"0")+":"+
+String(sec).padStart(2,"0")+"."+
 
 String(ms).padStart(3,"0");
 
-},10);
+}
+
+function startWatch(){
+
+if(!running){
+
+startTime = Date.now();
+
+timer = setInterval(updateWatch,10);
+
+running=true;
 
 }
 
 }
 
-function pause(){
+function stopWatch(){
+
+if(running){
 
 clearInterval(timer);
 
-timer=null;
+elapsed += Date.now()-startTime;
+
+running=false;
 
 }
 
-function reset(){
+}
 
-pause();
+function resetWatch(){
+
+clearInterval(timer);
 
 elapsed=0;
 
-time.innerHTML="00:00:000";
+running=false;
+
+document.getElementById("stopwatch").innerHTML="00:00.000";
 
 }
 
-// PASSWORD
+function generatePassword(){
 
-function makePassword(){
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
 
-let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%";
-
-let result="";
+let pass="";
 
 for(let i=0;i<16;i++){
 
-result+=chars[Math.floor(Math.random()*chars.length)];
+pass += chars[Math.floor(Math.random()*chars.length)];
 
 }
 
-password.innerHTML=result;
+document.getElementById("password").innerHTML=pass;
+
+}
+  async function generateEssay(){
+
+let topic = document.getElementById("topic").value;
+
+let words = document.getElementById("words").value;
+
+document.getElementById("essayOutput").value =
+
+"Generating essay about: " + topic + "\n\n" +
+
+"Requested length: " + words + " words\n\n" +
+
+"AI connection will be added next.";
 
 }
 
-// ESSAY
+async function humanize(){
 
-function makeEssay(){
+let text = document.getElementById("humanInput").value;
 
-let topic=document.getElementById("topic").value;
+document.getElementById("humanOutput").value =
 
-let words=Number(document.getElementById("amount").value);
-
-if(words>3000) words=3000;
-
-let text="";
-
-while(text.split(" ").length<words){
-
-text+=topic+" is an interesting subject that has many important details. Learning about this topic helps people understand new ideas and discover more information about the world. ";
+"Humanized version:\n\n" + text;
 
 }
 
-document.getElementById("essay").value=text;
+function changeBackground(){
 
-}
+let color = document.getElementById("bgColor").value;
 
-// HUMANIZER
-
-function humanize(){
-
-let text=document.getElementById("inputText").value;
-
-document.getElementById("outputText").value=
-
-"Humanized version will appear here when AI is connected.\n\n"+text;
+document.body.style.background = color;
 
 }
 
