@@ -124,7 +124,7 @@ overflow:auto;
 
 <button onclick="essay()">Create</button>
 
-<p id="essay"></p>
+<textarea id="essay" readonly></textarea>
 
 </div>
 
@@ -248,14 +248,12 @@ let sentences=[
 
 while(text.split(" ").length < words){
 
-text += topic + sentences[Math.floor(Math.random()*sentences.length)]+" ";
+text += topic + sentences[Math.floor(Math.random()*
+                                     
 
 }
-
-document.getElementById("essay").innerHTML=text;
-
-}
-
+document.getElementById("essay").value=text;
+  
 // HUMANIZER PLACEHOLDER
 
 function humanize(){
