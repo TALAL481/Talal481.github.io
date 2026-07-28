@@ -293,6 +293,31 @@ async function humanize(){
 
 let text = document.getElementById("humanInput").value;
 
+let response = await fetch("https://talal481-github-io-4.onrender.com/humanize", {
+
+  method: "POST",
+
+  headers: {
+
+    "Content-Type": "application/json"
+
+  },
+
+  body: JSON.stringify({
+
+    text: text
+
+  })
+
+});
+
+let data = await response.json();
+
+document.getElementById("humanOutput").value = data.result;
+
+}
+let text = document.getElementById("humanInput").value;
+
 document.getElementById("humanOutput").value =
 
 "Humanized version:\n\n" + text;
