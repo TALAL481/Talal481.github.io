@@ -10,7 +10,7 @@
 
 body{
 
-background:#000;
+background:black;
 
 color:white;
 
@@ -26,7 +26,7 @@ display:grid;
 
 grid-template-columns:repeat(2,1fr);
 
-gap:15px;
+gap:12px;
 
 padding:15px;
 
@@ -46,9 +46,9 @@ button{
 
 padding:8px;
 
-border-radius:8px;
-
 margin:4px;
+
+border-radius:8px;
 
 }
 
@@ -68,14 +68,6 @@ height:100px;
 
 }
 
-#essay{
-
-height:200px;
-
-overflow:auto;
-
-}
-
 </style>
 
 </head>
@@ -84,13 +76,21 @@ overflow:auto;
 
 <h1>🚀 AI Tools Hub</h1>
 
+<div class="box">
+
+<h3>🎨 Change Background</h3>
+
+<input type="color" onchange="changeBG(this.value)">
+
+</div>
+
 <div class="container">
 
 <div class="box">
 
 <h3>⏱️ Stopwatch</h3>
 
-<h4 id="time">00:00:000</h4>
+<h2 id="time">00:00:000</h2>
 
 <button onclick="start()">Start</button>
 
@@ -102,11 +102,11 @@ overflow:auto;
 
 <div class="box">
 
-<h3>🔐 Password</h3>
+<h3>🔐 Password Generator</h3>
 
-<button onclick="password()">Generate</button>
+<button onclick="makePassword()">Generate</button>
 
-<p id="pass"></p>
+<p id="password"></p>
 
 </div>
 
@@ -116,15 +116,15 @@ overflow:auto;
 
 <input id="topic" placeholder="Essay topic">
 
-<br>
+<br><br>
 
-<input id="words" placeholder="Words (max 3000)">
+<input id="amount" placeholder="Words (max 3000)">
 
-<br>
+<br><br>
 
-<button onclick="essay()">Create</button>
+<button onclick="makeEssay()">Generate</button>
 
-<textarea id="essay" readonly></textarea>
+<textarea id="essay"></textarea>
 
 </div>
 
@@ -132,11 +132,11 @@ overflow:auto;
 
 <h3>🤖 AI Humanizer</h3>
 
-<textarea id="text" placeholder="Paste text"></textarea>
+<textarea id="inputText" placeholder="Paste text here"></textarea>
 
-<button onclick="humanize()">Humanize</button>
+<button onclick="humanize()">Fix Text</button>
 
-<p id="human"></p>
+<textarea id="outputText"></textarea>
 
 </div>
 
@@ -144,17 +144,25 @@ overflow:auto;
 
 <script>
 
+// BACKGROUND
+
+function changeBG(color){
+
+document.body.style.background=color;
+
+}
+
 // STOPWATCH
 
-let startTime;
-
 let elapsed=0;
+
+let startTime;
 
 let timer=null;
 
 function start(){
 
-if(!timer){
+if(timer==null){
 
 startTime=Date.now()-elapsed;
 
@@ -168,7 +176,7 @@ let sec=Math.floor(elapsed/1000)%60;
 
 let min=Math.floor(elapsed/60000);
 
-time.innerHTML=
+document.getElementById("time").innerHTML=
 
 String(min).padStart(2,"0")+":"+
 
@@ -202,67 +210,53 @@ time.innerHTML="00:00:000";
 
 // PASSWORD
 
-function password(){
+function makePassword(){
 
 let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%";
 
-let p="";
+let result="";
 
 for(let i=0;i<16;i++){
 
-p+=chars[Math.floor(Math.random()*chars.length)];
+result+=chars[Math.floor(Math.random()*chars.length)];
 
 }
 
-pass.innerHTML=p;
+password.innerHTML=result;
 
 }
 
-// ESSAY GENERATOR
+// ESSAY
 
-function essay(){
+function makeEssay(){
 
 let topic=document.getElementById("topic").value;
 
-let words=Number(document.getElementById("words").value);
+let words=Number(document.getElementById("amount").value);
 
 if(words>3000) words=3000;
 
 let text="";
 
-let sentences=[
+while(text.split(" ").length<words){
 
-" is an important topic that affects many parts of our lives.",
-
-" People continue to learn more about this subject every day.",
-
-" Understanding this topic can help us improve our knowledge.",
-
-" There are many different ideas and opinions connected to it.",
-
-" This subject has influenced the world in many ways.",
-
-" Studying this topic helps people discover new information."
-
-];
-
-while(text.split(" ").length < words){
-
-text += topic + sentences[Math.floor(Math.random()*
-                                     
+text+=topic+" is an interesting subject that has many important details. Learning about this topic helps people understand new ideas and discover more information about the world. ";
 
 }
+
 document.getElementById("essay").value=text;
-  
-// HUMANIZER PLACEHOLDER
+
+}
+
+// HUMANIZER
 
 function humanize(){
 
-let text=document.getElementById("text").value;
+let text=document.getElementById("inputText").value;
 
-document.getElementById("human").innerHTML=
+document.getElementById("outputText").value=
 
-"Humanized version will appear here when AI is connected.";
+"Humanized version will appear here when AI is connected.\n\n"+text;
 
 }
 
