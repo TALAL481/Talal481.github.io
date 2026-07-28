@@ -4,57 +4,75 @@
 
 <head>
 
-<title>Useful Tools Hub</title>
+<title>AI Tools Hub</title>
 
 <style>
 
-body {
+body{
 
-  background: black;
+background:#000;
 
-  color: white;
+color:white;
 
-  font-family: Arial;
+font-family:Arial;
 
-  text-align: center;
-
-}
-
-.box {
-
-  background: #222;
-
-  padding: 20px;
-
-  margin: 20px;
-
-  border-radius: 15px;
+text-align:center;
 
 }
 
-button {
+.container{
 
-  padding: 10px;
+display:grid;
 
-  margin: 5px;
+grid-template-columns:repeat(2,1fr);
 
-  border-radius: 10px;
+gap:15px;
 
-  cursor: pointer;
-
-}
-
-input {
-
-  padding: 10px;
-
-  border-radius: 8px;
+padding:15px;
 
 }
 
-h1 {
+.box{
 
-  margin-top: 30px;
+background:#222;
+
+padding:15px;
+
+border-radius:15px;
+
+}
+
+button{
+
+padding:8px;
+
+border-radius:8px;
+
+margin:4px;
+
+}
+
+input,textarea{
+
+width:90%;
+
+padding:8px;
+
+border-radius:8px;
+
+}
+
+textarea{
+
+height:100px;
+
+}
+
+#essay{
+
+height:200px;
+
+overflow:auto;
 
 }
 
@@ -64,13 +82,15 @@ h1 {
 
 <body>
 
-<h1>Useful Tools Hub 🚀</h1>
+<h1>🚀 AI Tools Hub</h1>
+
+<div class="container">
 
 <div class="box">
 
-<h2>⏱️ Stopwatch</h2>
+<h3>⏱️ Stopwatch</h3>
 
-<h3 id="time">00:00:000</h3>
+<h4 id="time">00:00:000</h4>
 
 <button onclick="start()">Start</button>
 
@@ -82,91 +102,77 @@ h1 {
 
 <div class="box">
 
-<h2>🔐 Password Generator</h2>
+<h3>🔐 Password</h3>
 
-<button onclick="password()">Generate Password</button>
+<button onclick="password()">Generate</button>
 
-<h3 id="pass"></h3>
-
-</div>
-
-<div class="box">
-
-<h2>🎲 Random Number Generator</h2>
-
-<button onclick="randomNumber()">Generate</button>
-
-<h3 id="number"></h3>
+<p id="pass"></p>
 
 </div>
 
 <div class="box">
 
-<h2>💡 Random Idea Generator</h2>
+<h3>📝 Essay Generator</h3>
 
-<button onclick="idea()">Generate Idea</button>
+<input id="topic" placeholder="Essay topic">
 
-<h3 id="idea"></h3>
+<br>
 
-</div>
+<input id="words" placeholder="Words (max 3000)">
 
-<div class="box">
+<br>
 
-<h2>💬 Random Quote Generator</h2>
+<button onclick="essay()">Create</button>
 
-<button onclick="quote()">Generate Quote</button>
-
-<h3 id="quote"></h3>
+<p id="essay"></p>
 
 </div>
 
 <div class="box">
 
-<h2>📝 Paragraph Generator</h2>
+<h3>🤖 AI Humanizer</h3>
 
-<input id="topic" placeholder="Topic">
+<textarea id="text" placeholder="Paste text"></textarea>
 
-<br><br>
+<button onclick="humanize()">Humanize</button>
 
-<input id="lines" placeholder="Number of lines">
+<p id="human"></p>
 
-<br><br>
-
-<button onclick="generateParagraph()">Generate</button>
-
-<p id="paragraph"></p>
+</div>
 
 </div>
 
 <script>
 
+// STOPWATCH
+
 let startTime;
 
-let elapsed = 0;
+let elapsed=0;
 
-let timer = null;
+let timer=null;
 
 function start(){
 
-if(timer === null){
+if(!timer){
 
-startTime = Date.now() - elapsed;
+startTime=Date.now()-elapsed;
 
-timer = setInterval(()=>{
+timer=setInterval(()=>{
 
-elapsed = Date.now() - startTime;
+elapsed=Date.now()-startTime;
 
-let ms = elapsed % 1000;
+let ms=elapsed%1000;
 
-let seconds = Math.floor(elapsed / 1000) % 60;
+let sec=Math.floor(elapsed/1000)%60;
 
-let minutes = Math.floor(elapsed / 60000);
+let min=Math.floor(elapsed/60000);
 
-document.getElementById("time").innerHTML =
+time.innerHTML=
 
-String(minutes).padStart(2,"0") + ":" +
+String(min).padStart(2,"0")+":"+
 
-String(seconds).padStart(2,"0") + ":" +
+String(sec).padStart(2,"0")+":"+
 
 String(ms).padStart(3,"0");
 
@@ -180,7 +186,7 @@ function pause(){
 
 clearInterval(timer);
 
-timer = null;
+timer=null;
 
 }
 
@@ -188,95 +194,77 @@ function reset(){
 
 pause();
 
-elapsed = 0;
+elapsed=0;
 
-document.getElementById("time").innerHTML="00:00:000";
+time.innerHTML="00:00:000";
 
 }
+
+// PASSWORD
 
 function password(){
 
 let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%";
 
-let result="";
+let p="";
 
-for(let i=0;i<12;i++){
+for(let i=0;i<16;i++){
 
-result += chars[Math.floor(Math.random()*chars.length)];
-
-}
-
-document.getElementById("pass").innerHTML=result;
+p+=chars[Math.floor(Math.random()*chars.length)];
 
 }
 
-function randomNumber(){
-
-document.getElementById("number").innerHTML =
-
-Math.floor(Math.random()*1000);
+pass.innerHTML=p;
 
 }
 
-function idea(){
+// ESSAY GENERATOR
 
-let ideas=[
+function essay(){
 
-"Learn a new skill",
+let topic=document.getElementById("topic").value;
 
-"Create a small project",
+let words=Number(document.getElementById("words").value);
 
-"Read a book",
+if(words>3000) words=3000;
 
-"Exercise today",
+let text="";
 
-"Try something creative"
+let sentences=[
+
+" is an important topic that affects many parts of our lives.",
+
+" People continue to learn more about this subject every day.",
+
+" Understanding this topic can help us improve our knowledge.",
+
+" There are many different ideas and opinions connected to it.",
+
+" This subject has influenced the world in many ways.",
+
+" Studying this topic helps people discover new information."
 
 ];
 
-document.getElementById("idea").innerHTML =
+while(text.split(" ").length < words){
 
-ideas[Math.floor(Math.random()*ideas.length)];
-
-}
-
-function quote(){
-
-let quotes=[
-
-"Keep going 🔥",
-
-"Never stop learning",
-
-"Small steps create big results",
-
-"Make today count",
-
-"Believe in yourself"
-
-];
-
-document.getElementById("quote").innerHTML =
-
-quotes[Math.floor(Math.random()*quotes.length)];
+text += topic + sentences[Math.floor(Math.random()*sentences.length)]+" ";
 
 }
 
-function generateParagraph(){
-
-let topic = document.getElementById("topic").value;
-
-let lines = Number(document.getElementById("lines").value);
-
-let text = "";
-
-for(let i=0;i<lines;i++){
-
-text += " " + topic + " is an interesting topic that people can learn about. Understanding this subject helps us gain knowledge and improve our skills.";
+document.getElementById("essay").innerHTML=text;
 
 }
 
-document.getElementById("paragraph").innerHTML = text;
+// HUMANIZER PLACEHOLDER
+
+function humanize(){
+
+let text=document.getElementById("text").value;
+
+document.getElementById("human").innerHTML=
+
+"Humanized version will appear here when AI is connected.";
 
 }
 
