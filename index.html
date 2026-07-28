@@ -4,27 +4,27 @@
 
 <head>
 
-<title>AI Tools</title>
+<title>AI Tools 🚀</title>
 
 <style>
 
 body {
 
-  margin: 0;
-
-  font-family: Arial, sans-serif;
-
   background: black;
 
   color: white;
 
+  font-family: Arial, sans-serif;
+
   text-align: center;
+
+  margin: 0;
 
 }
 
 h1 {
 
-  margin-top: 20px;
+  margin: 25px;
 
 }
 
@@ -54,15 +54,13 @@ h1 {
 
 button {
 
-  background: white;
-
-  color: black;
-
-  border: none;
-
   padding: 10px;
 
+  margin: 5px;
+
   border-radius: 10px;
+
+  border: none;
 
   cursor: pointer;
 
@@ -74,7 +72,7 @@ input, textarea {
 
   padding: 10px;
 
-  margin: 10px;
+  margin: 8px;
 
   border-radius: 10px;
 
@@ -82,9 +80,9 @@ input, textarea {
 
 }
 
-#stopwatch {
+#time {
 
-  font-size: 35px;
+  font-size: 30px;
 
 }
 
@@ -102,13 +100,13 @@ input, textarea {
 
 <h2>⏱ Stopwatch</h2>
 
-<div id="stopwatch">00:00:00.000</div>
+<div id="time">00:00:00.000</div>
 
-<button onclick="startWatch()">Start</button>
+<button onclick="startTimer()">Start</button>
 
-<button onclick="stopWatch()">Stop</button>
+<button onclick="stopTimer()">Stop</button>
 
-<button onclick="resetWatch()">Reset</button>
+<button onclick="resetTimer()">Reset</button>
 
 </div>
 
@@ -116,7 +114,7 @@ input, textarea {
 
 <h2>🔐 Password Generator</h2>
 
-<p id="password">Your password</p>
+<p id="password">---</p>
 
 <button onclick="generatePassword()">Generate</button>
 
@@ -127,11 +125,11 @@ input, textarea {
 
 <input id="topic" placeholder="Enter essay topic">
 
-<input id="words" placeholder="Number of words (max 3000)">
+<input id="words" placeholder="Word count">
 
 <button onclick="generateEssay()">Generate Essay</button>
 
-<textarea id="essayOutput" rows="10" placeholder="Your essay appears here"></textarea>
+<textarea id="essayResult" rows="8" placeholder="Essay appears here"></textarea>
 
 </div>
 
@@ -139,21 +137,21 @@ input, textarea {
 
 <h2>🤖 AI Humanizer</h2>
 
-<textarea id="humanInput" rows="8" placeholder="Paste your text here"></textarea>
+<textarea id="humanText" rows="8" placeholder="Paste text here"></textarea>
 
 <button onclick="humanize()">Humanize</button>
 
-<textarea id="humanOutput" rows="8" placeholder="Humanized text"></textarea>
+<textarea id="humanResult" rows="8" placeholder="Result appears here"></textarea>
 
 </div>
 
 <div class="card">
 
-<h2>🎨 Background</h2>
+<h2>🎨 Change Background</h2>
 
-<input type="color" id="bgColor">
+<input type="color" id="color">
 
-<button onclick="changeBackground()">Change</button>
+<button onclick="changeColor()">Change</button>
 
 </div>
 
@@ -169,79 +167,87 @@ let running = false;
 
 let elapsed = 0;
 
-function updateWatch(){
+function updateTime(){
 
-let time = Date.now() - startTime + elapsed;
+let now = Date.now() - startTime + elapsed;
 
-let ms = time % 1000;
+let ms = now % 1000;
 
-let sec = Math.floor(time/1000)%60;
+let seconds = Math.floor(now / 1000) % 60;
 
-let min = Math.floor(time/60000)%60;
+let minutes = Math.floor(now / 60000) % 60;
 
-document.getElementById("stopwatch").innerHTML =
+let hours = Math.floor(now / 3600000);
 
-String(min).padStart(2,"0")+":"+
+document.getElementById("time").innerHTML =
 
-String(sec).padStart(2,"0")+"."+
+String(hours).padStart(2,"0") + ":" +
+
+String(minutes).padStart(2,"0") + ":" +
+
+String(seconds).padStart(2,"0") + "." +
 
 String(ms).padStart(3,"0");
 
 }
 
-function startWatch(){
+function startTimer(){
 
 if(!running){
 
 startTime = Date.now();
 
-timer = setInterval(updateWatch,10);
+timer = setInterval(updateTime,10);
 
-running=true;
-
-}
+running = true;
 
 }
 
-function stopWatch(){
+}
+
+function stopTimer(){
 
 if(running){
 
 clearInterval(timer);
 
-elapsed += Date.now()-startTime;
+elapsed += Date.now() - startTime;
 
-running=false;
-
-}
+running = false;
 
 }
 
-function resetWatch(){
+}
+
+function resetTimer(){
 
 clearInterval(timer);
 
-elapsed=0;
+running = false;
 
-running=false;
+elapsed = 0;
 
-document.getElementById("stopwatch").innerHTML="00:00.000";
+document.getElementById("time").innerHTML =
+
+"00:00:00.000";
 
 }
 
 function generatePassword(){
 
-let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+let chars =
 
-let pass="";
+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+
+let password = "";
 
 for(let i=0;i<16;i++){
 
-pass += chars[Math.floor(Math.random()*chars.length)];
+password += chars[Math.floor(Math.random()*chars.length)];
 
 }
 
-document.getElementById("password").innerHTML=pass;
+document.getElementById("password").innerHTML = password;
 
 }
 async function generateEssay(){
@@ -250,83 +256,29 @@ let topic = document.getElementById("topic").value;
 
 let words = document.getElementById("words").value;
 
-let response = await fetch("https://talal481-github-io-4.onrender.com/essay", {
+document.getElementById("essayResult").value =
 
-  method: "POST",
+"Essay topic: " + topic +
 
-  headers: {
+"\n\nWord count: " + words +
 
-    "Content-Type": "application/json"
-
-  },
-
-  body: JSON.stringify({
-
-    topic: topic,
-
-    words: words
-
-  })
-
-});
-
-let data = await response.json();
-
-document.getElementById("essayOutput").value = data.result;
-
-}
-let topic = document.getElementById("topic").value;
-
-let words = document.getElementById("words").value;
-
-document.getElementById("essayOutput").value =
-
-"Generating essay about: " + topic + "\n\n" +
-
-"Requested length: " + words + " words\n\n" +
-
-"AI connection will be added next.";
+"\n\nAI connection will be added here 🚀";
 
 }
 
 async function humanize(){
 
-let text = document.getElementById("humanInput").value;
+let text = document.getElementById("humanText").value;
 
-let response = await fetch("https://talal481-github-io-4.onrender.com/humanize", {
+document.getElementById("humanResult").value =
 
-  method: "POST",
-
-  headers: {
-
-    "Content-Type": "application/json"
-
-  },
-
-  body: JSON.stringify({
-
-    text: text
-
-  })
-
-});
-
-let data = await response.json();
-
-document.getElementById("humanOutput").value = data.result;
-
-}
-let text = document.getElementById("humanInput").value;
-
-document.getElementById("humanOutput").value =
-
-"Humanized version:\n\n" + text;
+"Humanized text:\n\n" + text;
 
 }
 
-function changeBackground(){
+function changeColor(){
 
-let color = document.getElementById("bgColor").value;
+let color = document.getElementById("color").value;
 
 document.body.style.background = color;
 
@@ -336,4 +288,4 @@ document.body.style.background = color;
 
 </body>
 
-</html>
+</html>  
