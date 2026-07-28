@@ -60,8 +60,14 @@ button {
 
 <h2>⏱️ Stopwatch</h2>
 
-<button>Open Stopwatch</button>
+<h3 id="time">0</h3>
 
+<button onclick="start()">Start</button>
+
+<button onclick="pause()">Pause</button>
+
+<button onclick="reset()">Reset</button>
+  
 </div>
 
 <div class="tool">
@@ -87,6 +93,47 @@ button {
 <button>Open Password Generator</button>
 
 </div>
+<script>
+
+let seconds = 0;
+
+let timer;
+
+function start() {
+
+  if (!timer) {
+
+    timer = setInterval(() => {
+
+      seconds++;
+
+      document.getElementById("time").innerHTML = seconds + "s";
+
+    }, 1000);
+
+  }
+
+}
+
+function pause() {
+
+  clearInterval(timer);
+
+  timer = null;
+
+}
+
+function reset() {
+
+  pause();
+
+  seconds = 0;
+
+  document.getElementById("time").innerHTML = "0";
+
+}
+
+</script>
 
 </body>
 
