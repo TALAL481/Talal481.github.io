@@ -10,29 +10,23 @@
 
 body {
 
-  font-family: Arial, sans-serif;
-
-  text-align: center;
-
-  background: #111;
+  background: black;
 
   color: white;
 
-}
+  font-family: Arial;
 
-h1 {
-
-  margin-top: 40px;
+  text-align: center;
 
 }
 
-.tool {
+.box {
 
   background: #222;
 
-  margin: 20px;
-
   padding: 20px;
+
+  margin: 20px;
 
   border-radius: 15px;
 
@@ -40,11 +34,17 @@ h1 {
 
 button {
 
-  padding: 10px 20px;
+  padding: 10px;
+
+  margin: 5px;
 
   border-radius: 10px;
 
-  cursor: pointer;
+}
+
+input {
+
+  padding: 10px;
 
 }
 
@@ -56,7 +56,7 @@ button {
 
 <h1>Useful Tools Hub 🚀</h1>
 
-<div class="tool">
+<div class="box">
 
 <h2>⏱️ Stopwatch</h2>
 
@@ -67,116 +67,128 @@ button {
 <button onclick="pause()">Pause</button>
 
 <button onclick="reset()">Reset</button>
-  
+
 </div>
 
-<div class="tool">
+<div class="box">
 
 <h2>🧮 Calculator</h2>
 
-<button>Open Calculator</button>
+<input id="num1" placeholder="Number 1">
+
+<input id="num2" placeholder="Number 2">
+
+<br>
+
+<button onclick="calc('+')">+</button>
+
+<button onclick="calc('-')">-</button>
+
+<button onclick="calc('*')">×</button>
+
+<button onclick="calc('/')">÷</button>
+
+<h3 id="answer">Answer:</h3>
 
 </div>
 
-<div class="tool">
-
-<h2>✅ To-Do List</h2>
-
-<button>Open To-Do List</button>
-
-</div>
-
-<div class="tool">
+<div class="box">
 
 <h2>🔐 Password Generator</h2>
 
-<button>Open Password Generator</button>
+<button onclick="generatePassword()">Generate</button>
+
+<h3 id="password"></h3>
 
 </div>
+
 <script>
 
-let timer;
-
-function start() {
-
-  if (!timer) {
-
-    timer = setInterval(() => {
-
-      seconds++;
-
-      document.getElementById("time").innerHTML = seconds + "s";
-
-    }, 1000);
-
-  }
-
-}
-
-function pause() {
-
-  clearInterval(timer);
 let milliseconds = 0;
 
 let timer = null;
 
-function start() {
+function start(){
 
-  if (timer === null) {
+if(timer === null){
 
-    timer = setInterval(function() {
+timer = setInterval(()=>{
 
-      milliseconds++;
+milliseconds++;
 
-      let ms = milliseconds % 1000;
+let ms = milliseconds % 1000;
 
-      let totalSeconds = Math.floor(milliseconds / 1000);
+let seconds = Math.floor(milliseconds / 1000) % 60;
 
-      let seconds = totalSeconds % 60;
+let minutes = Math.floor(milliseconds / 60000);
 
-      let minutes = Math.floor(totalSeconds / 60);
+document.getElementById("time").innerHTML =
 
-      document.getElementById("time").innerHTML =
+String(minutes).padStart(2,"0") + ":" +
 
-        String(minutes).padStart(2, "0") + ":" +
+String(seconds).padStart(2,"0") + ":" +
 
-        String(seconds).padStart(2, "0") + ":" +
+String(ms).padStart(3,"0");
 
-        String(ms).padStart(3, "0");
-
-    }, 1);
-
-  }
+},1);
 
 }
 
-function pause() {
+}
 
-  clearInterval(timer);
+function pause(){
 
-  timer = null;
+clearInterval(timer);
+
+timer = null;
 
 }
 
-function reset() {
+function reset(){
 
-  pause();
+pause();
 
-  milliseconds = 0;
+milliseconds = 0;
 
-  document.getElementById("time").innerHTML = "00:00:000";
-
-}
-  timer = null;
+document.getElementById("time").innerHTML="00:00:000";
 
 }
 
-function reset() {
+function calc(op){
 
-  pause();
+let a = Number(document.getElementById("num1").value);
 
-  seconds = 0;
+let b = Number(document.getElementById("num2").value);
 
+let result;
+
+if(op=="+") result=a+b;
+
+if(op=="-") result=a-b;
+
+if(op=="*") result=a*b;
+
+if(op=="/") result=a/b;
+
+document.getElementById("answer").innerHTML="Answer: "+result;
+
+}
+
+function generatePassword(){
+
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%";
+
+let password="";
+
+for(let i=0;i<12;i++){
+
+password += chars[Math.floor(Math.random()*chars.length)];
+
+}
+
+document.getElementById("password").innerHTML=password;
+
+}
 
 </script>
 
