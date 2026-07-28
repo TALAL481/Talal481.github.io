@@ -60,7 +60,7 @@ button {
 
 <h2>⏱️ Stopwatch</h2>
 
-<h3 id="time">0</h3>
+<h3 id="time">00:00:000</h3>
 
 <button onclick="start()">Start</button>
 
@@ -118,7 +118,57 @@ function start() {
 function pause() {
 
   clearInterval(timer);
+let milliseconds = 0;
 
+let timer = null;
+
+function start() {
+
+  if (timer === null) {
+
+    timer = setInterval(function() {
+
+      milliseconds++;
+
+      let ms = milliseconds % 1000;
+
+      let totalSeconds = Math.floor(milliseconds / 1000);
+
+      let seconds = totalSeconds % 60;
+
+      let minutes = Math.floor(totalSeconds / 60);
+
+      document.getElementById("time").innerHTML =
+
+        String(minutes).padStart(2, "0") + ":" +
+
+        String(seconds).padStart(2, "0") + ":" +
+
+        String(ms).padStart(3, "0");
+
+    }, 1);
+
+  }
+
+}
+
+function pause() {
+
+  clearInterval(timer);
+
+  timer = null;
+
+}
+
+function reset() {
+
+  pause();
+
+  milliseconds = 0;
+
+  document.getElementById("time").innerHTML = "00:00:000";
+
+}
   timer = null;
 
 }
