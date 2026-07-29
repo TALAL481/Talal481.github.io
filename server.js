@@ -28,7 +28,7 @@ app.post("/essay", async (req, res) => {
 
     const { topic, words } = req.body;
 
-    const response = await client.chat.completions.create({
+    const result = await client.chat.completions.create({
 
       model: "gpt-4o-mini",
 
@@ -48,15 +48,17 @@ app.post("/essay", async (req, res) => {
 
     res.json({
 
-      result: response.choices[0].message.content
+      result: result.choices[0].message.content
 
     });
 
   } catch (error) {
 
+    console.log(error);
+
     res.status(500).json({
 
-      error: error.message
+      result: "AI error ❌"
 
     });
 
@@ -70,7 +72,7 @@ app.post("/humanize", async (req, res) => {
 
     const { text } = req.body;
 
-    const response = await client.chat.completions.create({
+    const result = await client.chat.completions.create({
 
       model: "gpt-4o-mini",
 
@@ -80,7 +82,7 @@ app.post("/humanize", async (req, res) => {
 
           role: "user",
 
-          content: `Make this text sound more natural and human:\n\n${text}`
+          content: `Rewrite this to sound more human:\n\n${text}`
 
         }
 
@@ -90,15 +92,17 @@ app.post("/humanize", async (req, res) => {
 
     res.json({
 
-      result: response.choices[0].message.content
+      result: result.choices[0].message.content
 
     });
 
   } catch (error) {
 
+    console.log(error);
+
     res.status(500).json({
 
-      error: error.message
+      result: "AI error ❌"
 
     });
 
