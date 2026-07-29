@@ -1,291 +1,147 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>AI Tools 🚀</title>
 
-<style>
-
-body {
-
-  background: black;
-
-  color: white;
-
-  font-family: Arial, sans-serif;
-
-  text-align: center;
-
-  margin: 0;
-
-}
-
-h1 {
-
-  margin: 25px;
-
-}
-
-.container {
-
-  display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: 15px;
-
-  padding: 20px;
-
-}
-
-.card {
-
-  background: #111;
-
-  border-radius: 15px;
-
-  padding: 20px;
-
-  border: 1px solid #333;
-
-}
-
-button {
-
-  padding: 10px;
-
-  margin: 5px;
-
-  border-radius: 10px;
-
-  border: none;
-
-  cursor: pointer;
-
-}
-
-input, textarea {
-
-  width: 90%;
-
-  padding: 10px;
-
-  margin: 8px;
-
-  border-radius: 10px;
-
-  border: none;
-
-}
-
-#time {
-
-  font-size: 30px;
-
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
+<header>
+
 <h1>AI Tools 🚀</h1>
 
-<div class="container">
+<p>Your all-in-one productivity hub</p>
 
-<div class="card">
+</header>
+
+<main class="container">
+
+<section class="card">
 
 <h2>⏱ Stopwatch</h2>
 
-<div id="time">00:00:00.000</div>
+<div id="timer">
 
-<button onclick="startTimer()">Start</button>
-
-<button onclick="stopTimer()">Stop</button>
-
-<button onclick="resetTimer()">Reset</button>
+00:00:00.000
 
 </div>
 
-<div class="card">
+<button id="startStop">Start</button>
+
+<button id="reset">Reset</button>
+
+</section>
+
+<section class="card">
 
 <h2>🔐 Password Generator</h2>
 
-<p id="password">---</p>
+<p id="password">
 
-<button onclick="generatePassword()">Generate</button>
+Your password
 
-</div>
-<div class="card">
+</p>
 
-<h2>📝 Essay Generator</h2>
+<button id="generatePassword">
 
-<input id="topic" placeholder="Enter essay topic">
+Generate
 
-<input id="words" placeholder="Word count">
+</button>
 
-<button onclick="generateEssay()">Generate Essay</button>
+<button id="copyPassword">
 
-<textarea id="essayResult" rows="8" placeholder="Essay appears here"></textarea>
+Copy
 
-</div>
+</button>
 
-<div class="card">
+</section>
 
-<h2>🤖 AI Humanizer</h2>
+<section class="card">
 
-<textarea id="humanText" rows="8" placeholder="Paste text here"></textarea>
+<h2>📝 AI Essay Generator</h2>
 
-<button onclick="humanize()">Humanize</button>
+<input id="essayTopic" placeholder="Essay topic">
 
-<textarea id="humanResult" rows="8" placeholder="Result appears here"></textarea>
+<input id="essayWords" placeholder="Word count">
 
-</div>
+<button id="generateEssay">
 
-<div class="card">
+Generate Essay
 
-<h2>🎨 Change Background</h2>
+</button>
 
-<input type="color" id="color">
+<textarea id="essayOutput" placeholder="Your essay will appear here"></textarea>
 
-<button onclick="changeColor()">Change</button>
+<button id="copyEssay">
 
-</div>
+Copy Essay
 
-</div>
+</button>
 
-<script>
+</section>
 
-let startTime;
+<section class="card">
 
-let timer;
+<h2>✨ AI Humanizer</h2>
 
-let running = false;
+<textarea id="humanInput" placeholder="Paste AI text here"></textarea>
 
-let elapsed = 0;
+<button id="humanize">
 
-function updateTime(){
+Humanize
 
-let now = Date.now() - startTime + elapsed;
+</button>
 
-let ms = now % 1000;
+<textarea id="humanOutput" placeholder="Humanized text"></textarea>
 
-let seconds = Math.floor(now / 1000) % 60;
+<button id="copyHuman">
 
-let minutes = Math.floor(now / 60000) % 60;
+Copy Result
 
-let hours = Math.floor(now / 3600000);
+</button>
 
-document.getElementById("time").innerHTML =
+</section>
 
-String(hours).padStart(2,"0") + ":" +
+<section class="card">
 
-String(minutes).padStart(2,"0") + ":" +
+<h2>🎨 Theme</h2>
 
-String(seconds).padStart(2,"0") + "." +
+<input type="color" id="backgroundColor">
 
-String(ms).padStart(3,"0");
+<button id="changeBackground">
 
-}
+Change Background
 
-function startTimer(){
+</button>
 
-if(!running){
+</section>
 
-startTime = Date.now();
+<section class="card">
 
-timer = setInterval(updateTime,10);
+<h2>🔥 More Tools Coming</h2>
 
-running = true;
+<p>
 
-}
+More AI features will be added soon...
 
-}
+</p>
 
-function stopTimer(){
+</section>
 
-if(running){
+</main>
 
-clearInterval(timer);
-
-elapsed += Date.now() - startTime;
-
-running = false;
-
-}
-
-}
-
-function resetTimer(){
-
-clearInterval(timer);
-
-running = false;
-
-elapsed = 0;
-
-document.getElementById("time").innerHTML =
-
-"00:00:00.000";
-
-}
-
-function generatePassword(){
-
-let chars =
-
-"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
-
-let password = "";
-
-for(let i=0;i<16;i++){
-
-password += chars[Math.floor(Math.random()*chars.length)];
-
-}
-
-document.getElementById("password").innerHTML = password;
-
-}
-async function generateEssay(){
-
-let topic = document.getElementById("topic").value;
-
-let words = document.getElementById("words").value;
-
-document.getElementById("essayResult").value =
-
-"Essay topic: " + topic +
-
-"\n\nWord count: " + words +
-
-"\n\nAI connection will be added here 🚀";
-
-}
-
-async function humanize(){
-
-let text = document.getElementById("humanText").value;
-
-document.getElementById("humanResult").value =
-
-"Humanized text:\n\n" + text;
-
-}
-
-function changeColor(){
-
-let color = document.getElementById("color").value;
-
-document.body.style.background = color;
-
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 
-</html>  
+</html>
